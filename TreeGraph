@@ -1,0 +1,90 @@
+public class AlgoCode {
+
+    static int[][] graph;
+    static boolean isTree = true;
+    public static void main(String[] args) {
+        
+        readGraph(args[0]);
+        printGraph();
+        treeCheck();
+        System.out.println(isTree);
+        
+    }
+    
+    public static void printGraph(){
+        for(int i = 0; i < 5; i++){
+            for(int j = 0; j < 5; j++){
+                System.out.print(graph[i][j]);
+            }
+            System.out.println("");
+        }
+    }
+    
+    public static void readGraph(String filename){
+        try{
+            Scanner scnr = new Scanner(new File(filename));
+            int arrayLength = Integer.parseInt(scnr.nextLine().trim());
+            graph = new int[arrayLength][arrayLength];
+        
+            for(int i = 0; i < arrayLength; i++){
+                String[] numLine = scnr.nextLine().trim().split(" ");
+                
+                for(int j = 0; j < arrayLength; j++){
+                    graph[i][j] = Integer.parseInt(numLine[j]);
+                }
+            }
+        }
+        catch(FileNotFoundException ex){
+            System.out.println("File not found");
+        }
+    }
+    
+    public static void treeCheck(){
+        for(int i = 0; i < 5; i++){
+            for(int j = 0; j < 5; j++){ // go thru matrix
+                // check #1: Zero Diagonal 
+                if(i == j && graph[i][j] != 0 )
+                    isTree = false;
+
+                // check #2: Symmetry
+                if(graph[i][j]==1 && graph[j][i]!=1)
+                    isTree = false;
+
+                
+                // check #3: No cycles
+                if(graph[i][j] == 1){   // one found
+                   for(int r = 0; r < 5; r++){
+                       if(graph[r][j]==1 && graph[i][r]==1){
+                           isTree = false;
+                       } 
+                   } 
+                }
+            }
+        }
+    }
+    
+    public static void makeArray(){
+        
+        for(int i = 0; i < 5; i++){
+            for(int j = 0; j < 5; j++){
+                if(i==0 && j==1 ){
+                    graph[i][j] = 1;
+                    graph[j][i] = 1;
+                }
+                else if(i==1 && (j==2 || j==3 || j==4)){
+                    graph[i][j] = 1;
+                    graph[j][i] = 1;
+                }
+                else if(i==j){
+                    graph[i][j] = 0;
+                }
+            }
+        }
+        
+        // graph[1][2] = 1;
+        //graph[2][1] = 1;
+    }
+    
+    
+    
+}
